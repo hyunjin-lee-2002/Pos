@@ -16,7 +16,7 @@ public class MenuVO {
 		this.name = name;
 		this.price = price;
 	}
-
+ 
 	// getter/setter
 	public int getId() {
 		return id;
