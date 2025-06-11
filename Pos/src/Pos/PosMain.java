@@ -45,15 +45,15 @@ public class PosMain {
     }
 
     // 숫자 입력 시 nextInt() 대신 사용 (입력 꼬임 방지)
-    private static int readInt(Scanner sc) {
-        while (true) {
-            try {
-                return Integer.parseInt(sc.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.print("숫자를 입력해주세요: ");
-            }
-        }
-    }
+//    private static int readInt(Scanner sc) {
+//        while (true) {
+//            try {
+//                return Integer.parseInt(sc.nextLine());
+//            } catch (NumberFormatException e) {
+//                System.out.print("숫자를 입력해주세요: ");
+//            }
+//        }
+//    }
 /*
     // 주문/결제 메뉴
     static void orderPaymentMenu(Scanner sc) throws SQLException {
