@@ -10,16 +10,36 @@ import java.util.List;
 
 //메뉴 데이터베이스 접근을 담당하는 클래스
 public class MenuDAO {
-	// 메뉴 등록
+//	// 메뉴 등록
+//	public static void addMenu(int categoryId, String name, int price) throws SQLException {
+//		String sql = "INSERT INTO menu (menu_id, name, price, category_id) VALUES (null, ?, ?, ?)";
+//			try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+//				pstmt.setString(1, name);
+//				pstmt.setInt(2, price);
+//				pstmt.setInt(3, categoryId);
+//				pstmt.executeUpdate();
+//			}
+//	}
+	
 	public static void addMenu(int categoryId, String name, int price) throws SQLException {
-		String sql = "INSERT INTO menu (menu_id, name, price, category_id) VALUES (null, ?, ?, ?)";
-			try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-				pstmt.setString(1, name);
-				pstmt.setInt(2, price);
-				pstmt.setInt(3, categoryId);
-				pstmt.executeUpdate();
-			}
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    String sql = "INSERT INTO menu (menu_id, name, price, category_id) VALUES (null, ?, ?, ?)";
+	    
+	    try {
+	        conn = DBConnection.getConnection();
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, name);
+	        pstmt.setInt(2, price);
+	        pstmt.setInt(3, categoryId);
+	        pstmt.executeUpdate();
+	    } finally {
+	        // 자원 해제
+	        if (pstmt != null) try { pstmt.close(); } catch (SQLException e) { e.printStackTrace(); }
+	        if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+	    }
 	}
+
 
 	// 메뉴 조회 (전체)
 	public static List<MenuVO> getAllMenus() throws SQLException {

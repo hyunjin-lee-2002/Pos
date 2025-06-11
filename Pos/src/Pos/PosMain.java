@@ -194,7 +194,7 @@ public class PosMain {
                     int price = readInt(sc);
                     MenuDAO.addMenu(catId, name, price);
                     System.out.println("<등록되었습니다.>");
-                    break;
+                    break; 
                 case 2:
                     System.out.println("\n수정 ..............................................................");
                     System.out.println("위치 : 홈 > 메뉴 > 수정");
