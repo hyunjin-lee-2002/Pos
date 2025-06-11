@@ -23,18 +23,11 @@ public class PosMain {
                         System.out.println("                           프로그램 종료                        ");
                         System.out.println("********************************************************************");
                         return;
-                   // case 1:
-                     //   orderPaymentMenu(sc);
-                       // break;
-                  //  case 2:
-                    //    showSalesMenu(sc);
-                      //  break;
+                  
                     case 3:
                         menuManagementMenu(sc);
                         break;
-                  //  case 4:
-                    //    categoryManagementMenu(sc);
-                      //  break;
+                  
                     default:
                         System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
                 }
@@ -54,232 +47,135 @@ public class PosMain {
 //            }
 //        }
 //    }
-/*
-    // 주문/결제 메뉴
-    static void orderPaymentMenu(Scanner sc) throws SQLException {
-        while (true) {
-            System.out.println("\n주문 / 결제 --------------------------------------------------------");
-            System.out.println("      1. 등록                   2. 삭제                   3. 결제");
-            System.out.println("--------------------------------------------------------------------");
-            System.out.println("<주문현황>");
-            List<OrderVO> orders = OrderDAO.getAllOrders();
-            for (OrderVO o : orders) {
-                System.out.println(o.getId() + " - 메뉴번호(" + o.getMenuId() + ") / 메뉴수량(" + o.getQuantity() + ") / 테이블번호(" + o.getTableNo() + ")");
-            }
-            System.out.print("\n[주문 / 결제 번호를 입력해주세요]        * 0번 상위메뉴\n주문 / 결제 번호 : ");
-            int sub = readInt(sc);
-            if (sub == 0) break;
-            switch (sub) {
-                case 1:
-                    System.out.println("\n등록 ..............................................................");
-                    System.out.println("위치 : 홈 > 주문 / 결제 > 등록");
-                    
-                    // 현재 등록된 메뉴 목록 출력
-                    List<MenuVO> menus = MenuDAO.getAllMenus();
-                    System.out.println("\n<메뉴>");
-                    for (MenuVO m : menus) {
-                        System.out.println(m.getId() + " - " + m.getName() + " (" + m.getPrice() + "원)");
-                    }
-                    
-                    System.out.println("");
-                    System.out.print("1. 메뉴번호 : ");
-                    int menuId = readInt(sc);
-                    System.out.print("2. 메뉴수량 : ");
-                    int quantity = readInt(sc);
-                    System.out.print("3. 테이블번호 : ");
-                    int tableNo = readInt(sc);
-                    OrderDAO.addOrder(menuId, quantity, tableNo);
-                    System.out.println("<주문되었습니다.>");
-                    break;
-                case 2:
-                    System.out.println("\n삭제 ..............................................................");
-                    System.out.println("위치 : 홈 > 주문 / 결제 > 삭제");
-                    System.out.print("1. 주문번호 : ");
-                    int delId = readInt(sc);
-                    OrderDAO.deleteOrder(delId);
-                    System.out.println("<주문 취소되었습니다.>");
-                    break;
-                case 3:
-                    System.out.println("\n결제 ................................................................");
-                    System.out.println("      1. 전체결제                    2. 개별결제");
-                    System.out.println(".....................................................................");
-                    System.out.print("[결제 번호를 입력해주세요]        * 0번 상위메뉴\n위치 : 홈 > 주문 / 결제 > 결제\n결제 번호 : ");
-                    int pay = readInt(sc);
-                    if (pay == 0) continue;
-                    if (pay == 1) {
-                        System.out.print("1. 테이블번호 : ");
-                        int table = readInt(sc);
-                        OrderDAO.payTable(table);
-                        System.out.println("<결제되었습니다.>");
-                    } else if (pay == 2) {
-                        System.out.print("1. 주문번호 : ");
-                        int orderId = readInt(sc);
-                        OrderDAO.payOrder(orderId);
-                        System.out.println("<결제되었습니다.>");
-                    }
-                    break;
-                default:
-                    System.out.println("잘못된 입력입니다.");
-            }
-        }
-    }
-    */
 
-    /*
-    // 매출 메뉴
-    static void showSalesMenu(Scanner sc) throws SQLException {
-        while (true) {
-            System.out.println("\n매출 ---------------------------------------------------------------");
-            System.out.println("      1. 날짜                     2. 분야                ");
-            System.out.println("--------------------------------------------------------------------");
-            System.out.print("[매출 번호를 입력해주세요]        * 0번 상위메뉴\n매출 번호 : ");
-            int sub = readInt(sc);
-            if (sub == 0) break;
-            switch (sub) {
-                case 1:
-                    System.out.println("\n날짜 ..............................................................");
-                    System.out.println("위치 : 홈 > 매출 > 날짜");
-                    System.out.print("날   짜 : ");
-                    String date = sc.nextLine(); // 날짜 입력 (실제로는 날짜 입력 가능)
-                    int total = OrderDAO.getTotalSales();
-                    System.out.println("매출액 : " + total + "원");
-                    break;
-                case 2:
-                    System.out.println("\n분야 ..............................................................");
-                    System.out.println("위치 : 홈 > 매출 > 분야");
-                    System.out.print("날   짜 : ");
-                    date = sc.nextLine(); // 날짜 입력 (실제로는 날짜 입력 가능)
-                    List<CategoryVO> categories = CategoryDAO.getAllCategories();
-                    for (CategoryVO c : categories) {
-                        int sales = OrderDAO.getSalesByCategory(c.getId());
-                        System.out.println("카테고리(" + c.getId() + ") : " + sales + "원");
-                    }
-                    break;
-                default:
-                    System.out.println("잘못된 입력입니다.");
-            }
-        }
-    }
-    */
-
-    // 메뉴 관리 메뉴
+     
+ // 메뉴 관리 메뉴
     static void menuManagementMenu(Scanner sc) throws SQLException {
+        MenuDAO menuDAO = new MenuDAO();
+        CategoryDAO categoryDAO = new CategoryDAO();
+
         while (true) {
             System.out.println("\n메뉴 ---------------------------------------------------------------");
             System.out.println("      1. 등록                   2. 수정                   3. 삭제");
             System.out.println("--------------------------------------------------------------------");
             System.out.println("<메뉴현황>");
-            List<MenuVO> menus = MenuDAO.getAllMenus();
+            List<MenuVO> menus = menuDAO.getAllMenus();
             for (MenuVO m : menus) {
-                CategoryVO c = CategoryDAO.getCategory(m.getCategoryId());
+                CategoryVO c = categoryDAO.getCategory(m.getCategoryId());
                 System.out.println(m.getId() + " - 카테고리(" + m.getCategoryId() + "), 이름(" + m.getName() + "), 가격(" + m.getPrice() + ")");
             }
+
             System.out.print("\n[메뉴 번호를 입력해주세요]        * 0번 상위메뉴\n메뉴 번호 : ");
-            int sub = sc.nextInt();
+            int sub;
+            try {
+                sub = sc.nextInt();
+                sc.nextLine();
+            } catch (java.util.InputMismatchException e) {
+                sc.nextLine(); // 버퍼 정리
+                System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+                continue;
+            }
+
             if (sub == 0) break;
+
             switch (sub) {
                 case 1:
                     System.out.println("\n등록 ..............................................................");
                     System.out.println("위치 : 홈 > 메뉴 > 등록");
                     System.out.println("<카테고리>");
-                    List<CategoryVO> categories = CategoryDAO.getAllCategories();
-                    for (int i =0; i<categories.size(); i++) {
-                        System.out.println(categories.get(i).getId() + " - 이모티콘(" + categories.get(i).getEmoji() + "), 이름(" + categories.get(i).getName() + "), 설명(" + categories.get(i).getDescription() + ")");
+                    List<CategoryVO> categories = categoryDAO.getAllCategories();
+                    for (int i = 0; i < categories.size(); i++) {
+                        System.out.println(categories.get(i).getId() + " - 이모티콘(" + categories.get(i).getEmoji() + "), 이름(" + categories.get(i).getName() + "), 설명(" + categories.get(i).getExplanation() + ")");
                     }
+
+                    int catId;
                     System.out.print("1. 카테고리 번호 : ");
-                    int catId = sc.nextInt();
-                    sc.nextLine();
-                    
+                    try {
+                        catId = sc.nextInt();
+                        sc.nextLine();
+                    } catch (java.util.InputMismatchException e) {
+                        sc.nextLine();
+                        System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+                        continue;
+                    }
+
                     System.out.print("2. 이 름 : ");
                     String name = sc.nextLine();
-                    
+
+                    int price;
                     System.out.print("3. 가 격 : ");
-                    int price = sc.nextInt();
-                    MenuDAO.addMenu(catId, name, price);
-                    System.out.println("<등록되었습니다.>"); 
-                    break; 
+                    try {
+                        price = sc.nextInt();
+                        sc.nextLine();
+                    } catch (java.util.InputMismatchException e) {
+                        sc.nextLine();
+                        System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+                        continue;
+                    }
+
+                    menuDAO.addMenu(catId, name, price);
+                    System.out.println("<등록되었습니다.>");
+                    break;
+
                 case 2:
                     System.out.println("\n수정 ..............................................................");
                     System.out.println("위치 : 홈 > 메뉴 > 수정");
+
+                    int menuId;
                     System.out.print("1. 메뉴번호 : ");
-                    int menuId = sc.nextInt();
-                    sc.nextLine();
-                    
+                    try {
+                        menuId = sc.nextInt();
+                        sc.nextLine();
+                    } catch (java.util.InputMismatchException e) {
+                        sc.nextLine();
+                        System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+                        continue;
+                    }
+
                     System.out.print("2. 이 름 : ");
                     String newName = sc.nextLine();
+
+                    int newPrice;
                     System.out.print("3. 가 격 : ");
-                    int newPrice = sc.nextInt();
-                    MenuDAO.updateMenu(menuId, newName, newPrice);
+                    try {
+                        newPrice = sc.nextInt();
+                        sc.nextLine();
+                    } catch (java.util.InputMismatchException e) {
+                        sc.nextLine();
+                        System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+                        continue;
+                    }
+
+                    menuDAO.updateMenu(menuId, newName, newPrice);
                     System.out.println("<수정되었습니다.>");
                     break;
+
                 case 3:
                     System.out.println("\n삭제 ..............................................................");
                     System.out.println("위치 : 홈 > 메뉴 > 삭제");
+
+                    int delId;
                     System.out.print("1. 메뉴번호 : ");
-                    int delId = sc.nextInt();
-                    MenuDAO.deleteMenu(delId);
+                    try {
+                        delId = sc.nextInt();
+                        sc.nextLine();
+                    } catch (java.util.InputMismatchException e) {
+                        sc.nextLine();
+                        System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+                        continue;
+                    }
+
+                    menuDAO.deleteMenu(delId);
                     System.out.println("<삭제되었습니다.>");
                     break;
+
                 default:
-                    System.out.println("잘못된 입력입니다.");
+                    System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
             }
         }
     }
 
-    /*
-    // 카테고리 관리 메뉴
-    static void categoryManagementMenu(Scanner sc) throws SQLException {
-        while (true) {
-            System.out.println("\n카테고리 -----------------------------------------------------------");
-            System.out.println("      1. 등록                   2. 수정                   3. 삭제");
-            System.out.println("--------------------------------------------------------------------");
-            System.out.println("<카테고리>");
-            List<CategoryVO> categories = CategoryDAO.getAllCategories();
-            for (CategoryVO c : categories) {
-                System.out.println(c.getId() + " - 이모티콘(" + c.getEmoji() + "), 이름(" + c.getName() + "), 설명(" + c.getDescription() + ")");
-            }
-            System.out.print("\n[카테고리 번호를 입력해주세요]        * 0번 상위메뉴\n카테고리 번호 : ");
-            int sub = readInt(sc);
-            if (sub == 0) break;
-            switch (sub) {
-                case 1:
-                    System.out.println("\n등록 ..............................................................");
-                    System.out.println("위치 : 홈 > 카테고리 > 등록");
-                    System.out.print("1. 이모티콘 : ");
-                    String emoji = sc.nextLine();
-                    System.out.print("2. 이 름 : ");
-                    String name = sc.nextLine();
-                    System.out.print("3. 설 명 : ");
-                    String desc = sc.nextLine();
-                    CategoryDAO.addCategory(emoji, name, desc);
-                    System.out.println("<등록되었습니다.>");
-                    break;
-                case 2:
-                    System.out.println("\n수정 ..............................................................");
-                    System.out.println("위치 : 홈 > 카테고리 > 수정");
-                    System.out.print("카테고리번호 : ");
-                    int catId = readInt(sc);
-                    System.out.print("1. 이모티콘 : ");
-                    String newEmoji = sc.nextLine();
-                    System.out.print("2. 이 름 : ");
-                    String newName = sc.nextLine();
-                    System.out.print("3. 설 명 : ");
-                    String newDesc = sc.nextLine();
-                    CategoryDAO.updateCategory(catId, newEmoji, newName, newDesc);
-                    System.out.println("<수정되었습니다.>");
-                    break;
-                case 3:
-                    System.out.println("\n삭제 ..............................................................");
-                    System.out.println("위치 : 홈 > 카테고리 > 삭제");
-                    System.out.print("카테고리번호 : ");
-                    int delId = readInt(sc);
-                    CategoryDAO.deleteCategory(delId);
-                    System.out.println("<삭제되었습니다.>");
-                    break;
-                default:
-                    System.out.println("잘못된 입력입니다.");
-            }
-        }
-    }
-    */
+
+
+
 }

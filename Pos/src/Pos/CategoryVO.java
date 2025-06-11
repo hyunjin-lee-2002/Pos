@@ -27,7 +27,7 @@ public class CategoryVO {
         return name;
     }
 
-    public String getDescription() {
+    public String getExplanation() {
         return explanation;
     }
 
@@ -43,12 +43,7 @@ public class CategoryVO {
         this.name = name;
     }
 
-    public void setDescription(String explanation) {
+    public void setExplanation(String explanation) {
         this.explanation = explanation;
     }
-
-	public int getexplanation() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }
