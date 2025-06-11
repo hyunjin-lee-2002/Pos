@@ -15,7 +15,7 @@ public class PosMain {
             System.out.println("      1. 주문 / 결제      2. 매출      3. 메뉴      4. 카테고리");
             System.out.println("====================================================================");
             System.out.print("[시작메뉴 번호를 입력해주세요]        * 0번 프로그램 종료\n시작메뉴 번호 : ");
-            int choice = readInt(sc); // nextInt() 대신 readInt() 사용
+            int choice =sc.nextInt(); // nextInt() 대신 readInt() 사용
             try {
                 switch (choice) {
                     case 0:
@@ -175,7 +175,7 @@ public class PosMain {
                 System.out.println(m.getId() + " - 카테고리(" + m.getCategoryId() + "), 이름(" + m.getName() + "), 가격(" + m.getPrice() + ")");
             }
             System.out.print("\n[메뉴 번호를 입력해주세요]        * 0번 상위메뉴\n메뉴 번호 : ");
-            int sub = readInt(sc);
+            int sub = sc.nextInt();
             if (sub == 0) break;
             switch (sub) {
                 case 1:
@@ -183,27 +183,32 @@ public class PosMain {
                     System.out.println("위치 : 홈 > 메뉴 > 등록");
                     System.out.println("<카테고리>");
                     List<CategoryVO> categories = CategoryDAO.getAllCategories();
-                    for (CategoryVO c : categories) {
-                        System.out.println(c.getId() + " - 이모티콘(" + c.getEmoji() + "), 이름(" + c.getName() + "), 설명(" + c.getexplanation() + ")");
+                    for (int i =0; i<categories.size(); i++) {
+                        System.out.println(categories.get(i).getId() + " - 이모티콘(" + categories.get(i).getEmoji() + "), 이름(" + categories.get(i).getName() + "), 설명(" + categories.get(i).getDescription() + ")");
                     }
                     System.out.print("1. 카테고리 번호 : ");
-                    int catId = readInt(sc);
+                    int catId = sc.nextInt();
+                    sc.nextLine();
+                    
                     System.out.print("2. 이 름 : ");
                     String name = sc.nextLine();
+                    
                     System.out.print("3. 가 격 : ");
-                    int price = readInt(sc);
+                    int price = sc.nextInt();
                     MenuDAO.addMenu(catId, name, price);
-                    System.out.println("<등록되었습니다.>");
+                    System.out.println("<등록되었습니다.>"); 
                     break; 
                 case 2:
                     System.out.println("\n수정 ..............................................................");
                     System.out.println("위치 : 홈 > 메뉴 > 수정");
                     System.out.print("1. 메뉴번호 : ");
-                    int menuId = readInt(sc);
+                    int menuId = sc.nextInt();
+                    sc.nextLine();
+                    
                     System.out.print("2. 이 름 : ");
                     String newName = sc.nextLine();
                     System.out.print("3. 가 격 : ");
-                    int newPrice = readInt(sc);
+                    int newPrice = sc.nextInt();
                     MenuDAO.updateMenu(menuId, newName, newPrice);
                     System.out.println("<수정되었습니다.>");
                     break;
@@ -211,7 +216,7 @@ public class PosMain {
                     System.out.println("\n삭제 ..............................................................");
                     System.out.println("위치 : 홈 > 메뉴 > 삭제");
                     System.out.print("1. 메뉴번호 : ");
-                    int delId = readInt(sc);
+                    int delId = sc.nextInt();
                     MenuDAO.deleteMenu(delId);
                     System.out.println("<삭제되었습니다.>");
                     break;
