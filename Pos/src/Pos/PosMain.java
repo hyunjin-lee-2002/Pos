@@ -37,17 +37,6 @@ public class PosMain {
         }
     }
 
-    // 숫자 입력 시 nextInt() 대신 사용 (입력 꼬임 방지)
-//    private static int readInt(Scanner sc) {
-//        while (true) {
-//            try {
-//                return Integer.parseInt(sc.nextLine());
-//            } catch (NumberFormatException e) {
-//                System.out.print("숫자를 입력해주세요: ");
-//            }
-//        }
-//    }
-
      
  // 메뉴 관리 메뉴
     static void menuManagementMenu(Scanner sc) throws SQLException {
@@ -71,7 +60,7 @@ public class PosMain {
                 sub = sc.nextInt();
                 sc.nextLine();
             } catch (java.util.InputMismatchException e) {
-                sc.nextLine(); // 버퍼 정리
+                sc.nextLine(); 
                 System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
                 continue;
             }
@@ -85,7 +74,7 @@ public class PosMain {
                     System.out.println("<카테고리>");
                     List<CategoryVO> categories = categoryDAO.getAllCategories();
                     for (int i = 0; i < categories.size(); i++) {
-                        System.out.println(categories.get(i).getId() + " - 이모티콘(" + categories.get(i).getEmoji() + "), 이름(" + categories.get(i).getName() + "), 설명(" + categories.get(i).getExplanation() + ")");
+                        System.out.println(categories.get(i).getId() + " - 이모티콘(" + categories.get(i).getEmoji() + "), 이름(" + categories.get(i).getName() + "), 설명(" + categories.get(i).getDescription() + ")");
                     }
 
                     int catId;
@@ -174,8 +163,5 @@ public class PosMain {
             }
         }
     }
-
-
-
 
 }

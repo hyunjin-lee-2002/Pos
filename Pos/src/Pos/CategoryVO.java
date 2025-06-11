@@ -1,49 +1,53 @@
 package Pos;
 
+//카테고리 정보 저장
 public class CategoryVO {
-    private int id;
-    private String emoji;
-    private String name;
-    private String explanation;
+	private int categoryId;
+	private String emoji;
+	private String name;
+	private String explanation;
 
-    public CategoryVO() {}
+	// 생성자
+	public CategoryVO() {
+	}
 
-    public CategoryVO(int id, String emoji, String name, String explanation) {
-        this.id = id;
-        this.emoji = emoji;
-        this.name = name;
-        this.explanation = explanation;
-    }
+	public CategoryVO(int categoryId, String emoji, String name, String explanation) {
+		this.categoryId = categoryId;
+		this.emoji = emoji;
+		this.name = name;
+		this.explanation = explanation;
+	}
 
-    public int getId() {
-        return id;
-    }
+	// getter/setter
+	public int getId() {
+		return categoryId;
+	}
 
-    public String getEmoji() {
-        return emoji;
-    }
+	public void setId(int categoryId) {
+		this.categoryId = categoryId;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getEmoji() {
+		return emoji;
+	}
 
-    public String getExplanation() {
-        return explanation;
-    }
+	public void setEmoji(String emoji) {
+		this.emoji = emoji;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setEmoji(String emoji) {
-        this.emoji = emoji;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getDescription() {
+		return explanation;
+	}
 
-    public void setExplanation(String explanation) {
-        this.explanation = explanation;
-    }
+	public void setDescription(String description) {
+		this.explanation = description;
+	}
 }
