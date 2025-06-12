@@ -1,5 +1,6 @@
-package Pos;
+package pos; // 이 클래스가 포함된 패키지 위치
 
+// DB 연동을 위해 필요한 라이브러리 import
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,41 +9,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//MenuDAO 클래스 
 public class MenuDAO {
 
-	// ===========================
-	// [필드: DB 관련 객체 선언]
-	// ===========================
+	// DB 작업에 필요한 JDBC 객체들 선언
+	private Connection conn = null;         // DB 연결 객체
+	private PreparedStatement pstmt = null; // SQL 실행 객체
+	private ResultSet rs = null;            // SELECT 결과를 담는 객체
 
-	private Connection conn = null;        	// DB에 연결할 객체
-	private PreparedStatement pstmt = null; // SQL 실행 준비 객체 (바인딩 기능 포함)
-	private ResultSet rs = null;          	// SELECT 결과 저장 객체
+	// DB 접속을 위한 정보 (로컬 MySQL 기준)
+	private String driver = "com.mysql.cj.jdbc.Driver"; // MySQL JDBC 드라이버 클래스명
+	private String url = "jdbc:mysql://localhost:3306/pos_db"; // 접속할 DB URL
+	private String id = "pos";        // DB 사용자명
+	private String pw = "pos";        // DB 비밀번호
 
-	// ===========================
-	// [DB 접속 정보]
-	// ===========================
-	private String driver = "com.mysql.cj.jdbc.Driver"; 		// MySQL 드라이버 클래스
-	private String url = "jdbc:mysql://localhost:3306/pos_db"; 	// 연결할 DB의 주소
-	private String id = "pos"; 									// DB 사용자명
-	private String pw = "pos"; 									// DB 비밀번호
+	// 기본 생성자
+	public MenuDAO() {}
 
-	// ===========================
-	// [기본 생성자]
-	// ===========================
-	public MenuDAO() {
-		// 생성 시 특별한 초기화는 없음
-	}
-
-	// ===========================
-	// [DB 연결 수행 메서드]
-	// ===========================
+	
+	//DB 연결 메서드
 	public void connect() {
 		try {
-			// 1단계: JDBC 드라이버 로딩
-			Class.forName(driver);
-
-			// 2단계: DB에 연결 시도
-			conn = DriverManager.getConnection(url, id, pw);
+			Class.forName(driver); // 드라이버 로딩
+			conn = DriverManager.getConnection(url, id, pw); // DB 연결 수행
 		} catch (ClassNotFoundException e) {
 			System.out.println("error: 드라이버 로딩 실패 - " + e);
 		} catch (SQLException e) {
@@ -50,66 +40,58 @@ public class MenuDAO {
 		}
 	}
 
-	// ===========================
-	// [DB 자원 정리 메서드]
-	// ===========================
+	
+	 //DB 자원 정리 메서드
 	private void close() {
 		try {
-			if (rs != null) rs.close();         // SELECT 결과 종료
-			if (pstmt != null) pstmt.close();   // SQL 실행 객체 종료
-			if (conn != null) conn.close();     // DB 연결 종료
+			if (rs != null) rs.close();           // 결과셋 닫기
+			if (pstmt != null) pstmt.close();     // SQL 실행 객체 닫기
+			if (conn != null) conn.close();       // DB 연결 닫기
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
 		}
 	}
 
-	// ===========================
-	// [메뉴 등록 메서드]
-	// ===========================
+	
+	// 메뉴 등록 메서드
 	public int addMenu(int categoryId, String name, int price) {
-		int count = -1; 			// 영향을 받은 행 수 (결과값 저장용)
-		this.connect(); 			// DB 연결
-
-		try {
-			// menu_id는 AUTO_INCREMENT라 null 넣음
-			String query = "INSERT INTO menu VALUES (NULL, ?, ?, ?)";
-
-			pstmt = conn.prepareStatement(query); // SQL 준비
-
-			// ? 자리에 값 바인딩
-			pstmt.setString(1, name);			 // 1번 ? → 메뉴 이름
-			pstmt.setInt(2, price);				 // 2번 ? → 가격
-			pstmt.setInt(3, categoryId); 		 // 3번 ? → 카테고리 번호
-
-			count = pstmt.executeUpdate(); 		 // SQL 실행 후 처리된 행 수 반환
-		} catch (SQLException e) {
-			System.out.println("error: " + e);
-		} finally {
-			this.close(); 	// 자원 정리
-		}
-		return count; 		// 등록된 행 수 반환
-	}
-
-	// ===========================
-	// [전체 메뉴 조회 메서드]
-	// ===========================
-	public List<MenuVO> getAllMenus() {
-		List<MenuVO> list = new ArrayList<>(); // 결과 저장할 리스트 생성
+		int count = -1; // 결과 행 수 초기값
 		this.connect(); // DB 연결
 
 		try {
-			String query = "SELECT * FROM menu"; // 전체 메뉴 SELECT
+			String query = "INSERT INTO menu VALUES (NULL, ?, ?, ?)"; // menu_id는 auto_increment
 			pstmt = conn.prepareStatement(query);
-			rs = pstmt.executeQuery(); // 쿼리 실행 → 결과는 rs에 저장
+			pstmt.setString(1, name);        // name 설정
+			pstmt.setInt(2, price);          // price 설정
+			pstmt.setInt(3, categoryId);     // category_id 설정
+			count = pstmt.executeUpdate();   // SQL 실행 → 행 삽입
+		} catch (SQLException e) {
+			System.out.println("error: " + e);
+		} finally {
+			this.close(); // 자원 정리
+		}
 
-			// 결과 집합 반복
+		this.close(); // 중복 호출이긴 하지만 혹시 모를 누락 방지
+		return count;
+	}
+
+	//메뉴 전체 조회 메서드
+	public List<MenuVO> getAllMenus() {
+		List<MenuVO> list = new ArrayList<>(); // 결과 저장할 리스트
+		this.connect(); // DB 연결
+
+		try {
+			String query = "SELECT * FROM menu"; // 전체 메뉴 조회
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery(); // SQL 실행 → 결과 받아오기
+
+			// 결과 행 하나씩 MenuVO로 변환하여 리스트에 추가
 			while (rs.next()) {
-				// 각각의 행을 MenuVO로 변환해서 리스트에 저장
 				list.add(new MenuVO(
-					rs.getInt("menu_id"),		// 메뉴 ID
-					rs.getInt("category_id"),	// 카테고리 ID
-					rs.getString("name"),		// 이름
-					rs.getInt("price")			// 가격
+					rs.getInt("menu_id"),
+					rs.getInt("category_id"),
+					rs.getString("name"),
+					rs.getInt("price")
 				));
 			}
 		} catch (SQLException e) {
@@ -117,24 +99,23 @@ public class MenuDAO {
 		} finally {
 			this.close(); // 자원 정리
 		}
-		return list; // 메뉴 리스트 반환
+
+		this.close(); // 추가적인 안전 정리
+		return list;
 	}
 
-	// ===========================
-	// [특정 메뉴 1개 조회 메서드]
-	// ===========================
+	//특정 메뉴 1개 조회 메서드
 	public MenuVO getMenu(int id) {
-		MenuVO menu = null; 		// 결과 저장용 객체
-		this.connect(); 			// DB 연결
+		MenuVO menu = null; // 결과 담을 객체
+		this.connect();
 
 		try {
-			String query = "SELECT * FROM menu WHERE menu_id = ?"; // 조건부 조회
+			String query = "SELECT * FROM menu WHERE menu_id = ?";
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, id); 		// ?에 메뉴 ID 바인딩
-			rs = pstmt.executeQuery(); // 쿼리 실행
+			pstmt.setInt(1, id); // 조건 설정
+			rs = pstmt.executeQuery(); // 실행
 
-			if (rs.next()) {
-				// 결과가 있으면 MenuVO 객체 생성
+			if (rs.next()) { // 결과가 있으면 객체 생성
 				menu = new MenuVO(
 					rs.getInt("menu_id"),
 					rs.getInt("category_id"),
@@ -147,52 +128,52 @@ public class MenuDAO {
 		} finally {
 			this.close();
 		}
-		return menu; // 조회 결과 반환 (없으면 null)
+
+		this.close(); // 혹시 누락 방지
+		return menu;
 	}
 
-	// ===========================
-	// [메뉴 수정 메서드]
-	// ===========================
+	
+	 // 메뉴 수정 메서드
 	public int updateMenu(int id, String name, int price) {
-		int count = -1; // 영향받은 행 수
-		this.connect(); // DB 연결
+		int count = -1; // 수정 결과 초기값
+		this.connect();
 
 		try {
 			String query = "UPDATE menu SET name = ?, price = ? WHERE menu_id = ?";
 			pstmt = conn.prepareStatement(query);
-
-			// ?에 값 바인딩
-			pstmt.setString(1, name); 	// 수정할 이름
-			pstmt.setInt(2, price); 	// 수정할 가격
-			pstmt.setInt(3, id); 		// 수정 대상 menu_id
-
-			count = pstmt.executeUpdate(); // 실행 후 영향받은 행 수 저장
+			pstmt.setString(1, name);
+			pstmt.setInt(2, price);
+			pstmt.setInt(3, id);
+			count = pstmt.executeUpdate(); // SQL 실행 → 수정
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
 		} finally {
-			this.close(); // 자원 정리
+			this.close();
 		}
+
+		this.close(); // 중복이지만 안정성 고려
 		return count;
 	}
 
-	// ===========================
-	// [메뉴 삭제 메서드]
-	// ===========================
+	
+	 //메뉴 삭제 메서드
 	public int deleteMenu(int id) {
-		int count = -1; // 영향받은 행 수 저장용
-		this.connect(); // DB 연결
+		int count = -1; // 삭제 결과 초기값
+		this.connect();
 
 		try {
-			String query = "DELETE FROM menu WHERE menu_id = ?"; // 삭제 쿼리 준비
+			String query = "DELETE FROM menu WHERE menu_id = ?";
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, id); // 삭제할 메뉴 번호 바인딩
-
-			count = pstmt.executeUpdate(); // 삭제 실행
+			pstmt.setInt(1, id);
+			count = pstmt.executeUpdate(); // SQL 실행 → 삭제
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
 		} finally {
-			this.close(); // 자원 정리
+			this.close();
 		}
+
+		this.close(); // 안정성 고려한 정리
 		return count;
 	}
 }
