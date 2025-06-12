@@ -69,3 +69,4 @@ public class MenuVO {
 		this.price = price;
 	}
 }
+

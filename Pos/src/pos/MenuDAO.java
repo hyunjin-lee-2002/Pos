@@ -1,5 +1,5 @@
 package pos;
-
+    
 import java.sql.Connection;             // DB 연결을 위한 클래스
 import java.sql.DriverManager;         // DB 접속 도우미 클래스
 import java.sql.PreparedStatement;     // SQL 실행 준비 클래스

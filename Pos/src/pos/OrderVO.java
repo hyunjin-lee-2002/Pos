@@ -1,5 +1,5 @@
 package pos;
-
+     
 //주문 정보 저장
 public class OrderVO {
 	private int id;
