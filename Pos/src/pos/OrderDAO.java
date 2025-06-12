@@ -21,7 +21,7 @@ public class OrderDAO {
 	private String id = "pos";
 	private String pw = "pos";
 
-	// 생성자
+	// 생성자    
 	public OrderDAO() {}
 
 	// DB 연결 메소드
