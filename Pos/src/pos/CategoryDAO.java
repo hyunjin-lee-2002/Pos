@@ -1,4 +1,3 @@
-
 package pos;
 
 import java.sql.Connection;
